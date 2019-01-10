@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- eg: 两种方式都可以进行数据初始化 new -->
+    <!-- 1. 定义listener -->
+    <!--<bean class="com.sunland.listener.InitDataListener"/>-->
+
+    <!-- 2. 初始化写在 init-method 中 -->
+    <!--<bean class="com.sunland.utils.ParamUtils" init-method="initParameters"/>-->
+
+</beans>

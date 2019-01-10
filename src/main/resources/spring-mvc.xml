@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!-- 声明资源文件 -->
+    <mvc:resources mapping="/include/**" location="/include/"/>
+    <mvc:resources mapping="/swagger/**" location="/swagger/" cache-period="31556926"/>
+    <!-- 启用spring mvc 注解-->
+    <mvc:annotation-driven/>
+
+
+        <!-- 自动扫描且只扫描@Controller -->
+    <context:component-scan base-package="com.sunland" use-default-filters="false">
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+    <context:component-scan base-package="com.sunland.advice"/>
+    <context:annotation-config/>
+
+    <bean id="stringConverter"
+          class="org.springframework.http.converter.StringHttpMessageConverter">
+        <property name="supportedMediaTypes">
+            <list>
+                <value>text/plain;charset=UTF-8</value>
+                <value>text/html;charset=UTF-8</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- 输出对象转JSON支持 -->
+    <bean id="jsonConverter"
+          class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+        <!-- 属性设置是避免IE执行ajax时,返回json出现下载文件 -->
+        <property name="supportedMediaTypes">
+            <list>
+                <value>text/plain;charset=UTF-8</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- 字符转换, 同时解决接口的中文乱码问题 -->
+    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+        <property name="messageConverters">
+            <list>
+                <ref bean="stringConverter"/>
+                <ref bean="jsonConverter"/>
+            </list>
+        </property>
+    </bean>
+
+    <mvc:interceptors>
+        <!--test. maybe for log -->
+        <!--<mvc:interceptor>
+            <mvc:mapping path="/**/"/>
+            <mvc:exclude-mapping path="/include/**"/>
+            <mvc:exclude-mapping path="/html/**"/>
+            <bean class="com.sunland.interceptor.AllInterceptor"/>
+        </mvc:interceptor>-->
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <mvc:exclude-mapping path="/swagger/**"/>
+            <mvc:exclude-mapping path="/v2/**"/>
+            <bean class="com.sunland.interceptor.SessionInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
+
+
+    <!--<bean id="responseStatusAndBodyExceptionResolver"
+          class="com.sunland.handler.ResponseStatusAndBodyExceptionResolver">
+        <property name="order" value="-1"></property>
+    </bean>
+-->
+    <!--<bean id="handlerExceptionResolver"
+          class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+        <property name="exceptionMappings">
+            <props>
+                &lt;!&ndash;<prop key="com.sunland.exception.AuthorizationException">redirect:/login</prop>&ndash;&gt;
+                <prop key="com.sunland.exception.AuthorizationException">redirect:/timeout</prop>
+                <prop key="com.sunland.exception.KickOffException">redirect:/kickoff</prop>
+            </props>
+        </property>
+    </bean>-->
+
+
+
+
+    <!-- 视图解析器:定义跳转的文件的前后缀 -->
+    <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/pages/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
+
+    <mvc:default-servlet-handler />
+    <bean class="com.sunland.config.SwaggerConfig" />
+
+
+    <!-- 配置文件上传，如果没有使用文件上传可以不用配置，配置文件中也不必引入上传组件包 -->
+    <bean id="multipartResolver"
+          class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!-- 默认编码 -->
+        <property name="defaultEncoding" value="utf-8"/>
+        <!-- 文件大小最大值 -->
+        <property name="maxUploadSize" value="10485760000"/>
+        <!-- 内存中的最大值 -->
+        <property name="maxInMemorySize" value="40960"/>
+    </bean>
+
+</beans>

@@ -1,0 +1,46 @@
+package com.gttown.common.support.mybatis.interceptor;
+
+import com.google.common.base.CaseFormat;
+import org.apache.ibatis.executor.resultset.ResultSetHandler;
+import org.apache.ibatis.plugin.*;
+
+import java.sql.Statement;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+
+/**
+ * Created by hbprotoss on 21/12/2016.
+ */
+@Intercepts({@Signature(type = ResultSetHandler.class, method = "handleResultSets", args = {Statement.class})})
+public class MapInterceptor implements Interceptor {
+    @Override
+    public Object intercept(Invocation invocation) throws Throwable {
+        List list = (List) invocation.proceed();
+        // 如果list结果集里包含的不是map，直接返回原值
+        if (list.size() == 0 || !(list.get(0) instanceof Map))
+            return list;
+        // 如果有map，把下划线分割的列名转化成驼峰
+        for (int i = 0; i < list.size(); i++) {
+            Map map = (Map) list.get(i);
+            Map<String, Object> target = new HashMap<>();
+            for (Object oEntry : map.entrySet()) {
+                Map.Entry entry = (Map.Entry) oEntry;
+                target.put(CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, (String) entry.getKey()), entry.getValue());
+                list.set(i, target);
+            }
+        }
+        return list;
+    }
+
+    @Override
+    public Object plugin(Object target) {
+        return Plugin.wrap(target, this);
+    }
+
+    @Override
+    public void setProperties(Properties properties) {
+
+    }
+}

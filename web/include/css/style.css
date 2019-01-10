@@ -1,0 +1,401 @@
+.lan12 {
+    font-size: 12px;
+    text-transform: capitalize;
+    color: #0A86DC;
+    text-decoration: none
+}
+
+.huang12 {
+    font-size: 12px;
+    color: #858667;
+    text-decoration: none
+}
+
+.hei12 {
+    color: #000000;
+    font-size: 12px;
+    text-decoration: none
+}
+
+.mail {
+    line-height: normal;
+    color: #000000;
+    text-decoration: none;
+    background-color: #FFFFFF;
+    border: 1px #666666 solid
+}
+
+.hei12 {
+}
+
+.bai12 {
+    line-height: normal;
+    color: #FFFFFF;
+    text-decoration: none;
+    font-size: 12px
+}
+
+.hei12bs {
+    color: #000000;
+    font-size: 12px;
+    text-decoration: none;;
+    filter: Chroma(Color=#fffff7);
+    cursor: hand
+}
+
+.hei32 {
+    color: #000000;
+    font-size: 12px;
+    text-decoration: none;;
+    line-height: 25px
+}
+
+.unnamed2 {
+    font-size: 12px;
+    color: #000000;
+    text-decoration: none
+}
+
+.hei22 {
+    color: #000000;
+    font-size: 12px;
+    text-decoration: none;;
+    line-height: 22px
+}
+
+body {
+    background-color: #FFFAEE;
+    margin-left: 0px;
+    margin-top: 0px;
+    font-size: 9pt;
+
+    overflow: auto;
+}
+
+body {
+    background-color: #FEF3E2;
+}
+
+SELECT {
+    FONT-SIZE: 12px
+}
+
+INPUT {
+    FONT-SIZE: 12px
+}
+
+.dbinput {
+    FONT-SIZE: 12px;
+    background-color: #FED78D;
+    border: 1 solid #7F9DB9
+}
+
+.tb {
+    background-color: #259DCF;
+}
+
+.tbw {
+    background-color: #F5F9FF;
+}
+
+.tb TH {
+    height: 23px;
+    font-size: 10pt;
+    text-align: left;
+    text-indent: 20pt;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    color: #000000;
+    cursor: default;
+    font-style: normal;
+    background-image: url(../../images/TB-bg.gif);
+}
+
+.tb tr {
+    height: 20px;
+    font-size: 10pt;
+    text-align: left;
+    text-indent: 20pt;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    background-color: #FFFFFF;
+    color: #000000;
+}
+
+.bg {
+    height: 20px;
+    font-size: 10pt;
+    text-align: left;
+    text-indent: 20pt;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    color: #000000;
+    cursor: default;
+    font-style: normal;
+    FILTER: progid: DXImageTransform . Microsoft . Gradient(startColorStr = '#ffffff', endColorStr = '#6698CC', gradientType = '0');
+}
+
+.b {
+    height: 20px;
+    font-size: 9pt;
+    text-align: center;
+    text-indent: 5pt;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    cursor: default;
+}
+
+.tx {
+    background-color: #FFEDC8;
+    height: 20px;
+    font-size: 9pt;
+    text-align: center;
+    text-indent: 5pt;
+    font-family: Arial, Helvetica, sans-serif;
+    cursor: default;
+    color: #5E2500;
+}
+
+.tb TR {
+    height: 20px;
+    font-size: 9pt;
+    text-align: left;
+    text-indent: 5pt;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: normal;
+    cursor: default;
+}
+
+.THS {
+    background-color: #efefef;
+    height: 25px;
+    font-size: 10pt;
+    text-align: center;
+    text-indent: 0pt;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #121111;
+    font-weight: normal;
+    cursor: default;
+}
+
+.tbsub {
+    width: 100%;
+}
+
+.tbsub TH {
+    ���� height: 20px;
+    font-size: 10pt;
+    text-align: center;
+    text-indent: 0pt;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #121111;
+    font-weight: bold;
+    cursor: default;
+    FILTER: progid: DXImageTransform . Microsoft . Gradient(startColorStr = '#d4cfc9', endColorStr = '#FFFFFF', gradientType = '0')
+}
+
+.tbsub TR {
+    background-color: #FFFFFF;
+    height: 20px;
+    font-size: 10pt;
+    text-align: left;
+    text-indent: 0pt;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: normal;
+    cursor: hand;
+}
+
+.tbsubSearch {
+    width: 100%;
+}
+
+.tbsubSearch TR {
+    background-color: #efefef;
+    height: 20px;
+    font-size: 10pt;
+    text-align: left;
+    text-indent: 0pt;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: normal;
+    cursor: hand;
+}
+
+.tbsubSearch TH {
+    background-color: #fffbf0;
+    height: 25px;
+    font-size: 10pt;
+    text-align: center;
+    text-indent: 0pt;
+    font-family: Arial, Helvetica, sans-serif;
+    color: blue;
+    font-weight: normal;
+    cursor: default;
+}
+
+.box {
+    font-family: "Arial", "Helvetica", "sans-serif";
+    font-size: 9pt;
+    height: 23px;
+}
+
+.hiddenbox {
+    background-color: #48669f;
+    color: #48669f;
+    border: 0px none #48669f;
+}
+
+.btn_2k3 {
+    color: #000000;
+    cursor: hand;
+    background-color: #efefef;
+    font-color: #000000;
+    border: 1 solid #91908C;
+}
+
+.button2 {
+    color: #FF0000;
+    cursor: hand;
+    font-color: #000000;
+    solid #91908C;
+}
+
+.btnadd_2 {
+    font-size: 12px;
+    width: 80px;
+    height: 20px;
+    background-image: url(Images/Btn/btnadd_2.gif);
+    border: none;
+    padding-top: 3px;
+    cursor: hand;
+}
+
+.button {
+    PADDING-RIGHT: 2px;
+    PADDING-LEFT: 2px;
+    FONT-SIZE: 12px;
+    FILTER: progid: DXImageTransform . Microsoft . Gradient(GradientType = 0, StartColorStr = #FFFFFF, EndColorStr = #FDE1AB);
+    CURSOR: hand;
+    COLOR: #934804;
+    PADDING-TOP: 2px;
+    border: 1px solid #FFA66A;
+}
+
+.select {
+    border: 0 solid #FFFFFF
+}
+
+.input {
+    background-color: expression((this.readOnly && this.readOnly==true)?"#FFA66A":"")
+    border: 1px solid #FFEBC1;
+}
+
+.ReadOnly {
+    COLOR: #000000;
+    BACKGROUND-COLOR: silver;
+    border: 1px solid #FFCA95;
+}
+
+a:link {
+    font-size: 9pt;
+    color: #154BA0;
+    text-decoration: none;
+}
+
+a:visited {
+    font-size: 9pt;
+    color: #154BA0;
+    text-decoration: none;
+}
+
+a:hover {
+    font-size: 9pt;
+    color: #FFFFFF;
+    position: relative;
+    left: 1px;
+    top: 1px;
+}
+
+.pt10 {
+    font-size: 10pt;
+}
+
+.margin0 {
+    margin-bottom: 0px;
+    margin-left: 0px;
+    margin-right: 0px;
+    margin-top: 0px;
+}
+
+.bg1 {
+    background-color: #E1EFFE;
+    border: 1 solid #7F9DB9
+}
+
+.10
+{
+    font-size: 10pt
+;
+}
+
+.underline1 {
+    BORDER-BOTTOM: #000000 1px solid
+}
+
+.leftline {
+    BORDER-LEFT: FILTER:
+    progid: DXImageTransform . Microsoft . Gradient(startColorStr = '#ffffff', endColorStr = '#6698CC', gradientType = '0')
+}
+
+.rightline {
+    BORDER-RIGHT: FILTER:
+    progid: DXImageTransform . Microsoft . Gradient(startColorStr = '#ffffff', endColorStr = '#6698CC', gradientType = '0')
+}
+
+/*
+.bgp{ 
+	FILTER: progid:DXImageTransform.Microsoft.Gradient(startColorStr='#b3dbff', endColorStr='#ddf1f8', gradientType='2')
+}
+*/
+
+.bgreadonly {
+    background-color: #ACA899;
+    border: 1 solid #7F9DB9
+}
+
+.trag {
+    background-image: url(/images/argent.jpg);
+}
+
+.buttonCss {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 9pt;
+    background-image: url(/images/blue.jpg);
+
+    BORDER-BOTTOM: #5ca4e2 1px solid;
+    BORDER-LEFT: #5ca4e2 1px solid;
+    BORDER-RIGHT: #5ca4e2 1px solid;
+    BORDER-TOP: #5ca4e2 1px solid;
+    border: 1px #5ca4e2 solid;
+    background-color: #e8f4ff;
+    CURSOR: hand;
+
+    /* width:60px;*/
+    height: 22px;
+}
+
+.bottom {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    color: #999999;
+}
+
+.tb1 {
+    background-color: #0479C8;
+    font-size: 12px;
+    color: #024979;
+}
+
+.tb1 tr {
+    background-color: #ffffff;
+    text-indent: 5px;
+}

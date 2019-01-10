@@ -1,0 +1,28 @@
+[
+  {
+    "id":1,
+    "text":"全部",
+    "children":[
+      {
+        "id":2,
+        "text":"海曙区",
+        "children":[
+          {"id":7,"text":"区域1"},
+          {"id":8,"text":"区域2"},
+          {"id":9,"text":"区域3"},
+          {"id":10,"text":"区域4"},
+          {"id":11,"text":"区域5"}
+        ]
+      },
+      {"id":3,"text":"江北区","selected":"true"},
+      {"id":4,"text":"北仑区"},
+      {"id":5,"text":"镇海区"},
+      {"id":6,"text":"鄞州区"}
+    ],
+    "state": {
+      "opened": true
+    }
+  }
+]
+
+
