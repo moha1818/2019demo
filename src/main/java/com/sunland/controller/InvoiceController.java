@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 import com.sunland.dto.RestResponse;
 import com.sunland.pojo.TestDemo;
 import com.sunland.service.TestDemoService;
+import com.sunland.utils.EnvUtils;
 import io.swagger.annotations.*;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,8 @@ public class InvoiceController {
     @ApiOperation(httpMethod = "GET",value = "获取个人信息",notes = "[@moha]")
     public RestResponse<TestDemo> listCompound(@ApiParam(required = false, name = "userName", value = "名称模糊查询") @RequestParam String userName) {
         TestDemo testDemo = testDemoService.selectByPrimaryKey(1);
+        String s = EnvUtils.getProperty("piaozone.com");
+        System.out.println(s);
         return new RestResponse<TestDemo>(testDemo);
     }
 }

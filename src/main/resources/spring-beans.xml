@@ -10,4 +10,14 @@
     <!-- 2. 初始化写在 init-method 中 -->
     <!--<bean class="com.sunland.utils.ParamUtils" init-method="initParameters"/>-->
 
+
+    <bean class="com.sunland.utils.EnvUtils" init-method="init" lazy-init="false" scope="singleton">
+        <property name="locations">
+            <list>
+                <value>classpath:common.properties</value>
+                <value>classpath:jdbc.properties</value>
+            </list>
+        </property>
+        <property name="localOverride" value="true"/>
+    </bean>
 </beans>
