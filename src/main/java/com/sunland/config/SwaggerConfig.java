@@ -29,7 +29,16 @@ public class SwaggerConfig extends WebMvcConfigurationSupport {
 
 	@Bean
     public Docket customDocket() {
-        return new Docket(DocumentationType.SWAGGER_2).useDefaultResponseMessages(false)
+        return new Docket(DocumentationType.SWAGGER_2)
+                .apiInfo( new ApiInfo("电子发票系统API接口",
+                "",
+                "1.0",
+                null,
+                "@Moha",
+                "",
+                ""
+                ))
+                .useDefaultResponseMessages(false)
                 .select()
                 .apis(RequestHandlerSelectors.any())
                 .paths(PathSelectors.regex("/api/.*"))

@@ -66,22 +66,6 @@
     </mvc:interceptors>
 
 
-    <!--<bean id="responseStatusAndBodyExceptionResolver"
-          class="com.sunland.handler.ResponseStatusAndBodyExceptionResolver">
-        <property name="order" value="-1"></property>
-    </bean>
--->
-    <!--<bean id="handlerExceptionResolver"
-          class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
-        <property name="exceptionMappings">
-            <props>
-                &lt;!&ndash;<prop key="com.sunland.exception.AuthorizationException">redirect:/login</prop>&ndash;&gt;
-                <prop key="com.sunland.exception.AuthorizationException">redirect:/timeout</prop>
-                <prop key="com.sunland.exception.KickOffException">redirect:/kickoff</prop>
-            </props>
-        </property>
-    </bean>-->
-
 
 
 

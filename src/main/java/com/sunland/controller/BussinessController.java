@@ -12,7 +12,7 @@ public class BussinessController {
     @ResponseBody
     @RequestMapping(value = "/getlist",method = RequestMethod.GET)
     @ApiOperation(value = "查询订单明细",notes = "[@moha]")
-    public String selectBusiness(@RequestParam(name = "1-路停 2-停车场") int type, @RequestParam(name = "微信-token 安卓IOS-mobilenum") String token_id, @RequestParam(name = "客户端")String from){
+    public String selectBusiness(@RequestParam(value = "1-路停 2-停车场") int type, @RequestParam(value = "微信-token 安卓IOS-mobilenum") String token_id, @RequestParam(value = "客户端")String from){
 
         return "";
     }
