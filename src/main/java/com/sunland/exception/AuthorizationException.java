@@ -9,4 +9,18 @@ package com.sunland.exception;
  */
 public class AuthorizationException extends Exception {
     private static final long serialVersionUID = 726227859865480176L;
+    public AuthorizationException(String msg) {
+        super(msg);
+    }
+
+    public AuthorizationException() {
+    }
+
+    public AuthorizationException(Throwable cause) {
+        super(cause);
+    }
+
+    public AuthorizationException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }

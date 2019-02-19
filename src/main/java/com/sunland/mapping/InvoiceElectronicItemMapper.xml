@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sunland.dao.InvoiceElectronicItemMapper" >
+  <resultMap id="BaseResultMap" type="com.sunland.pojo.InvoiceElectronicItem" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="eid" property="eid" jdbcType="INTEGER" />
+    <result column="uuid" property="uuid" jdbcType="VARCHAR" />
+    <result column="parkname" property="parkname" jdbcType="VARCHAR" />
+    <result column="parkmoney" property="parkmoney" jdbcType="DECIMAL" />
+    <result column="parktime" property="parktime" jdbcType="TIMESTAMP" />
+    <result column="hphm" property="hphm" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, eid, tid, parkname, parkmoney, parktime, hphm
+  </sql>
+</mapper>

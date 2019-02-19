@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sunland.dao.InvoiceElectronicInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.sunland.pojo.InvoiceElectronicInfo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="eid" property="eid" jdbcType="INTEGER" />
+    <result column="bueyrname" property="bueyrname" jdbcType="VARCHAR" />
+    <result column="buyertaxno" property="buyertaxno" jdbcType="VARCHAR" />
+    <result column="buyertelephone" property="buyertelephone" jdbcType="VARCHAR" />
+    <result column="buyeraddress" property="buyeraddress" jdbcType="VARCHAR" />
+    <result column="buyermobilephone" property="buyermobilephone" jdbcType="VARCHAR" />
+    <result column="buyeraccount" property="buyeraccount" jdbcType="VARCHAR" />
+    <result column="buyeremail" property="buyeremail" jdbcType="VARCHAR" />
+    <result column="createtime" property="createtime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, eid, bueyrname, buyertaxno, buyertelephone, buyeraddress, buyermobilephone, buyeraccount, 
+    buyeremail, createtime
+  </sql>
+</mapper>

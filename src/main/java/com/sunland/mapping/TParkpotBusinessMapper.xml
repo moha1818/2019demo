@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sunland.dao.TParkpotBusinessMapper">
+    <resultMap id="BaseResultMap" type="com.sunland.pojo.TParkpotBusiness">
+        <id column="pid" property="pid" jdbcType="INTEGER"/>
+        <result column="uuid" property="uuid" jdbcType="VARCHAR"/>
+        <result column="parkpotid" property="parkpotid" jdbcType="VARCHAR"/>
+        <result column="extbusinessid" property="extbusinessid" jdbcType="VARCHAR"/>
+        <result column="parkbusinesstype" property="parkbusinesstype" jdbcType="VARCHAR"/>
+        <result column="leavebusinesstype" property="leavebusinesstype" jdbcType="VARCHAR"/>
+        <result column="leavebusinesstype_tmp" property="leavebusinesstype_tmp" jdbcType="VARCHAR"/>
+        <result column="hphm" property="hphm" jdbcType="VARCHAR"/>
+        <result column="hpzl" property="hpzl" jdbcType="VARCHAR"/>
+        <result column="holdingtime" property="holdingtime" jdbcType="INTEGER"/>
+        <result column="parktime" property="parktime" jdbcType="TIMESTAMP"/>
+        <result column="leavetime" property="leavetime" jdbcType="TIMESTAMP"/>
+        <result column="businessstate" property="businessstate" jdbcType="CHAR"/>
+        <result column="paymenttotal" property="paymenttotal" jdbcType="INTEGER"/>
+        <result column="payment" property="payment" jdbcType="INTEGER"/>
+        <result column="paypreferential" property="paypreferential" jdbcType="INTEGER"/>
+        <result column="delayfee" property="delayfee" jdbcType="INTEGER"/>
+        <result column="createdate" property="createdate" jdbcType="TIMESTAMP"/>
+        <result column="updatedate" property="updatedate" jdbcType="TIMESTAMP"/>
+        <result column="autopaystate" property="autopaystate" jdbcType="CHAR"/>
+        <result column="errorinfo" property="errorinfo" jdbcType="VARCHAR"/>
+        <result column="couponid" property="couponid" jdbcType="INTEGER"/>
+        <result column="lastpaytime" property="lastpaytime" jdbcType="TIMESTAMP"/>
+        <result column="invoicestate" property="invoicestate" jdbcType="CHAR"/>
+        <result column="invoiceno" property="invoiceno" jdbcType="VARCHAR"/>
+        <result column="invoicecode" property="invoicecode" jdbcType="VARCHAR"/>
+        <result column="invoicetime" property="invoicetime" jdbcType="TIMESTAMP"/>
+        <result column="shopid" property="shopid" jdbcType="INTEGER"/>
+        <result column="hpys" property="hpys" jdbcType="VARCHAR"/>
+        <result column="mainbrandid" property="mainbrandid" jdbcType="VARCHAR"/>
+        <result column="subbrandid" property="subbrandid" jdbcType="VARCHAR"/>
+        <result column="csys" property="csys" jdbcType="VARCHAR"/>
+        <result column="is_paydelay_close" property="is_paydelay_close" jdbcType="VARCHAR"/>
+        <result column="accountid_wp" property="accountid_wp" jdbcType="INTEGER"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    pid, uuid, parkpotid, extbusinessid, parkbusinesstype, leavebusinesstype, leavebusinesstype_tmp, 
+    hphm, hpzl, holdingtime, parktime, leavetime, businessstate, paymenttotal, payment, 
+    paypreferential, delayfee, createdate, updatedate, autopaystate, errorinfo, couponid, 
+    lastpaytime, invoicestate, invoiceno, invoicecode, invoicetime, shopid, hpys, mainbrandid, 
+    subbrandid, csys, is_paydelay_close, accountid_wp
+  </sql>
+    <update id="updateBusinessByuuid">
+        update t_parkpot_business set invoicestate = #{invoicestate},invoiceno = #{invoiceno},invoicecode=#{invoicecode},invoicetime=now()
+        where uuid in
+        <foreach item="uuid" index="index" collection="uuid" open="(" separator="," close=")">
+            #{uuid}
+        </foreach>
+    </update>
+    <select id="selectparkpotBusinessByuuids" resultType="com.sunland.dto.BussinessInfo">
+    SELECT
+	tpb.uuid,
+	tpb.hphm,
+    (tpb.payment - tpb.delayfee ) AS payment,
+	tpb.holdingtime,
+	tp.parkpotname as parkname,
+	tpb.parktime,
+	tp.taxrate
+    FROM
+	t_parkpot_business tpb
+	INNER JOIN t_parkpot tp ON tpb.parkpotid = tp.parkpotid
+    WHERE
+	tpb.uuid IN
+	<foreach item="uuid" index="index" collection="uuid" open="(" separator="," close=")">
+        #{uuid}
+    </foreach>
+    AND tpb.invoicestate = 0
+	AND tpb.businessstate = 2
+	</select>
+
+</mapper>

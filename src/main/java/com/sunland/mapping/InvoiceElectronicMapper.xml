@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sunland.dao.InvoiceElectronicMapper" >
+  <resultMap id="BaseResultMap" type="com.sunland.pojo.InvoiceElectronic" >
+    <id column="eid" property="eid" jdbcType="INTEGER" />
+    <result column="accountId" property="accountId" jdbcType="INTEGER" />
+    <result column="serialno" property="serialno" jdbcType="VARCHAR" />
+    <result column="invoiceamount" property="invoiceamount" jdbcType="DECIMAL" />
+    <result column="totaltaxamount" property="totaltaxamount" jdbcType="DECIMAL" />
+    <result column="totalamount" property="totalamount" jdbcType="DECIMAL" />
+    <result column="invoicetype" property="invoicetype" jdbcType="TINYINT" />
+    <result column="projecttype" property="projecttype" jdbcType="INTEGER" />
+    <result column="invoicecode" property="invoicecode" jdbcType="VARCHAR" />
+    <result column="invoiceno" property="invoiceno" jdbcType="VARCHAR" />
+    <result column="pdfurl" property="pdfurl" jdbcType="VARCHAR" />
+    <result column="wxurl" property="wxurl" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="createtime" property="createtime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    eid, accountId, serialno, invoiceamount, totaltaxamount, totalamount, invoicetype, 
+    projecttype, invoicecode, invoiceno, pdfurl, wxurl, status, createtime
+  </sql>
+    <select id="selectHeaderInfoByAccountId" resultType="com.sunland.pojo.json.HeaderInfo">
+        SELECT iei.buyertaxno as creditCode,iei.bueyrname as name
+        FROM invoice_electronic ie INNER JOIN invoice_electronic_info iei ON ie.eid = iei.eid
+        where ie.accountId = #{accountId}
+        ORDER BY iei.createtime DESC limit 1
+    </select>
+
+</mapper>

@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sunland.dao.TBusinessMapper" >
+  <resultMap id="BaseResultMap" type="com.sunland.pojo.TBusiness" >
+    <id column="pid" property="pid" jdbcType="INTEGER" />
+    <result column="uuid" property="uuid" jdbcType="VARCHAR" />
+    <result column="parkpointid" property="parkpointid" jdbcType="VARCHAR" />
+    <result column="parklotnum" property="parklotnum" jdbcType="VARCHAR" />
+    <result column="parkbusinesstype" property="parkbusinesstype" jdbcType="VARCHAR" />
+    <result column="leavebusinesstype" property="leavebusinesstype" jdbcType="VARCHAR" />
+    <result column="hphm" property="hphm" jdbcType="VARCHAR" />
+    <result column="hpzl" property="hpzl" jdbcType="VARCHAR" />
+    <result column="holdingtime" property="holdingtime" jdbcType="INTEGER" />
+    <result column="parktime" property="parktime" jdbcType="TIMESTAMP" />
+    <result column="leavetime" property="leavetime" jdbcType="TIMESTAMP" />
+    <result column="businessstate" property="businessstate" jdbcType="CHAR" />
+    <result column="paymenttotal" property="paymenttotal" jdbcType="INTEGER" />
+    <result column="paylatefee" property="paylatefee" jdbcType="INTEGER" />
+    <result column="payment" property="payment" jdbcType="INTEGER" />
+    <result column="paypreferential" property="paypreferential" jdbcType="INTEGER" />
+    <result column="consultstate" property="consultstate" jdbcType="CHAR" />
+    <result column="dgparktime" property="dgparktime" jdbcType="TIMESTAMP" />
+    <result column="dgleavetime" property="dgleavetime" jdbcType="TIMESTAMP" />
+    <result column="cameraparktime" property="cameraparktime" jdbcType="TIMESTAMP" />
+    <result column="cameraleavetime" property="cameraleavetime" jdbcType="TIMESTAMP" />
+    <result column="dgbusinessid" property="dgbusinessid" jdbcType="INTEGER" />
+    <result column="camerabusinessid" property="camerabusinessid" jdbcType="INTEGER" />
+    <result column="createdate" property="createdate" jdbcType="TIMESTAMP" />
+    <result column="updatedate" property="updatedate" jdbcType="TIMESTAMP" />
+    <result column="couponid" property="couponid" jdbcType="INTEGER" />
+    <result column="lastpaytime" property="lastpaytime" jdbcType="TIMESTAMP" />
+    <result column="platecredible" property="platecredible" jdbcType="DOUBLE" />
+    <result column="actioncredible" property="actioncredible" jdbcType="DOUBLE" />
+    <result column="invoicestate" property="invoicestate" jdbcType="CHAR" />
+    <result column="invoiceno" property="invoiceno" jdbcType="VARCHAR" />
+    <result column="invoicecode" property="invoicecode" jdbcType="VARCHAR" />
+    <result column="invoicetime" property="invoicetime" jdbcType="TIMESTAMP" />
+    <result column="warnstate" property="warnstate" jdbcType="VARCHAR" />
+    <result column="arrtype" property="arrtype" jdbcType="CHAR" />
+    <result column="cameraid" property="cameraid" jdbcType="INTEGER" />
+    <result column="noticestate1" property="noticestate1" jdbcType="CHAR" />
+    <result column="noticestate2" property="noticestate2" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    pid, uuid, parkpointid, parklotnum, parkbusinesstype, leavebusinesstype, hphm, hpzl, 
+    holdingtime, parktime, leavetime, businessstate, paymenttotal, paylatefee, payment, 
+    paypreferential, consultstate, dgparktime, dgleavetime, cameraparktime, cameraleavetime, 
+    dgbusinessid, camerabusinessid, createdate, updatedate, couponid, lastpaytime, platecredible, 
+    actioncredible, invoicestate, invoiceno, invoicecode, invoicetime, warnstate, arrtype, 
+    cameraid, noticestate1, noticestate2
+  </sql>
+  <update id="updateBusinessByuuid">
+    update t_business set invoicestate = #{invoicestate},invoiceno = #{invoiceno},invoicecode=#{invoicecode},invoicetime=now()
+    where uuid in
+    <foreach item="uuid" index="index" collection="uuid" open="(" separator="," close=")">
+      #{uuid}
+    </foreach>
+  </update>
+
+  <select id="selectBussinessList" resultType="com.sunland.pojo.json.PaymentList">
+    SELECT * from
+    (
+    SELECT
+    t.uuid as uuid,DATE_FORMAT(t.lastpaytime,'%Y-%m-%d %h:%i') as dateTime,t.hphm as hmp,t.payment as amount
+    FROM
+    t_business t
+    INNER JOIN (
+    SELECT
+    e.hphm,
+    e.hpzl,
+    d.mobilenum
+    FROM
+    account_vehicle e
+    LEFT JOIN account d ON e.accountid = d.accountid
+    WHERE
+    <if test="mobilenum != null and mobilenum !=''">
+      d.mobilenum = #{mobilenum, jdbcType=VARCHAR}
+    </if>
+    <if test="utoken !=null and utoken !=''">
+      d.utoken = #{utoken,jdbcType=VARCHAR}
+    </if>
+    ) f ON t.hphm = f.hphm
+    AND t.hpzl = f.hpzl
+    WHERE invoicestate = 0 and businessstate =2
+    ) r
+    WHERE r.amount!=0
+    ORDER BY r.dateTime DESC
+  </select>
+
+  <select id="selectParkpotBussinessList" resultType="com.sunland.pojo.json.PaymentList">
+    SELECT * from
+    (
+    SELECT
+    t.uuid as uuid,DATE_FORMAT(t.lastpaytime,'%Y-%m-%d %h:%i') as dateTime,t.hphm as hmp,t.payment-t.delayfee as amount,t.parkpointid
+    FROM
+    t_parkpot_business t
+    INNER JOIN (
+    SELECT
+    e.hphm,
+    e.hpzl,
+    d.mobilenum
+    FROM
+    account_vehicle e
+    LEFT JOIN account d ON e.accountid = d.accountid
+    WHERE
+    <if test="mobilenum != null and mobilenum !=''">
+      d.mobilenum = #{mobilenum, jdbcType=VARCHAR}
+    </if>
+    <if test="openid !=null and openid !=''">
+      d.utoken = #{utoken,jdbcType=VARCHAR}
+    </if>
+    ) f ON t.hphm = f.hphm
+    AND t.hpzl = f.hpzl
+    WHERE invoicestate = 0 and businessstate =2
+    ) r
+    WHERE r.amount>0
+    ORDER BY r.dateTime DESC
+  </select>
+  <select id="selectparkpointBusinessByuuids" resultType="com.sunland.dto.BussinessInfo">
+    SELECT
+	tb.uuid,
+	tb.hphm,
+	tb.payment,
+	tb.holdingtime,
+	tb.parktime,
+	tp.parkpointname as parkname
+    FROM
+	t_business tb
+	INNER JOIN t_parkpoint tp ON tb.parkpointid = tp.parkpointid
+    WHERE
+	tb.uuid IN
+	<foreach item="uuid" index="index" collection="uuid" open="(" separator="," close=")">
+    #{uuid}
+    </foreach>
+	and tb.invoicestate = 0
+	AND tb.businessstate = 2
+  </select>
+</mapper>

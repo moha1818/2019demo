@@ -1,10 +1,6 @@
 package com.sunland.utils;
-import javax.crypto.Cipher;
-import javax.crypto.spec.SecretKeySpec;
-
-import org.apache.commons.codec.binary.Base64;
-
 import com.alibaba.fastjson.JSONObject;
+import org.apache.commons.codec.binary.Base64;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -14,9 +10,12 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 
+import javax.crypto.Cipher;
+import javax.crypto.spec.SecretKeySpec;
+
 //https://www.oschina.net/code/snippet_242957_9931
 public class AES128 {
-	private final static String PASSWORD = "!!king?DeE|12345";
+	private final static String PASSWORD = "9HBue67HwwrEGSV9";
 	
 	/**
 	 * 加密 
@@ -141,16 +140,15 @@ public class AES128 {
         System.out.println("解密后的字串是：" + DeString);*/
     	
     	//String requestUrl = "http://127.0.0.1:8080/bill-portalweb/portal/orcmorder/get";
-    	String requestUrl = "http://172.18.1.113:9101/bill-portalweb/portal/orcmorder/get";
+    	String requestUrl = "https://api-dev.piaozone.com/base/oauth/token";
 		JSONObject orcmOrder = new JSONObject();
-		orcmOrder.put("serialid", encrypt("3064003862", "!!king?DeE|12345")) ;
+		orcmOrder.put("client_id", "CF1r0jHSI0I493");
+		long timestamp = System.currentTimeMillis();
+		String sign = "CF1r0jHSI0I493"+"699lhH4R2EDe2jv87nHAa5Q60CE1q2"+timestamp;
+        orcmOrder.put("sign", StringUtil.MD5(sign));
+        orcmOrder.put("timestamp", timestamp);
 		String str = doPost(requestUrl,  orcmOrder.toJSONString()).toString() ;
 		System.out.println(str);
-		
-		JSONObject result = JSONObject.parseObject(str) ;
-		String data = result.getString("data") ;
-		data = decrypt(data, "!!king?DeE|12345") ;
-		System.out.println(data);
     }
 
 

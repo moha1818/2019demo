@@ -1,10 +1,7 @@
 package com.sunland.advice;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.sunland.dto.RestResponse;
-import com.sunland.exception.BadRequestException;
-import com.sunland.exception.NotFoundException;
-import com.sunland.exception.PermissionException;
-import com.sunland.exception.ValidateException;
+import com.sunland.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -50,6 +47,13 @@ public class RestControllerAdvice {
     @ResponseBody
     public RestResponse<String> handleBadRequestException(Exception e) {
         return new RestResponse<>(HttpStatus.BAD_REQUEST.value(), e.getMessage(), "");
+    }
+
+    @ExceptionHandler(BizException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseBody
+    public RestResponse<String> handleBizException(Exception e) {
+        return new RestResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage(), "");
     }
 
     /**

@@ -24,7 +24,7 @@ public class Items implements Serializable {
     /**
      *税收分类编码
      */
-    private String goodsCode;
+    private String goodsCode = "3040502020200000000";
     /**
      *单价
      */
@@ -40,11 +40,11 @@ public class Items implements Serializable {
     /**
      *正常行0，折扣行1，被折扣行2
      */
-    private String discountType;
+    private String discountType = "0";
     /**
      *货物名称
      */
-    private String goodsName;
+    private String goodsName="停车费";
     /**
      *数量
      */
@@ -52,7 +52,7 @@ public class Items implements Serializable {
     /**
      *优惠政策
      */
-    private String preferentialPolicy;
+    private String preferentialPolicy="0";
     /**
      *增值税特殊管理
      */

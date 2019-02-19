@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sunland.dao.AccountVehicleMapper" >
+  <resultMap id="BaseResultMap" type="com.sunland.pojo.AccountVehicle" >
+    <id column="pid" property="pid" jdbcType="INTEGER" />
+    <result column="accountid" property="accountid" jdbcType="INTEGER" />
+    <result column="hphm" property="hphm" jdbcType="VARCHAR" />
+    <result column="hpzl" property="hpzl" jdbcType="VARCHAR" />
+    <result column="bindtime" property="bindtime" jdbcType="TIMESTAMP" />
+    <result column="authenticatedstate" property="authenticatedstate" jdbcType="CHAR" />
+    <result column="isautopay" property="isautopay" jdbcType="CHAR" />
+    <result column="czxm" property="czxm" jdbcType="VARCHAR" />
+    <result column="clsbdh" property="clsbdh" jdbcType="VARCHAR" />
+    <result column="imgpath" property="imgpath" jdbcType="VARCHAR" />
+    <result column="authenticatedtime" property="authenticatedtime" jdbcType="TIMESTAMP" />
+    <result column="czsjhm" property="czsjhm" jdbcType="VARCHAR" />
+    <result column="is_cz" property="is_cz" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    pid, accountid, hphm, hpzl, bindtime, authenticatedstate, isautopay, czxm, clsbdh, 
+    imgpath, authenticatedtime, czsjhm, is_cz
+  </sql>
+</mapper>

@@ -1,8 +1,11 @@
 package com.sunland.pojo.json;
 
-import java.io.Serializable;
+import com.sunland.dto.Items;
 
-public class createInvoiceJson implements Serializable {
+import java.io.Serializable;
+import java.util.List;
+
+public class  CreateInvoiceJson implements Serializable {
     private static final long serialVersionUID = 7294821467678534650L;
     /**
      * 流水号
@@ -88,6 +91,8 @@ public class createInvoiceJson implements Serializable {
      * 备注
      */
     private String remark;
+
+    private List<Items> items;
 
     public String getSerialNo() {
         return serialNo;
@@ -255,5 +260,13 @@ public class createInvoiceJson implements Serializable {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public List<Items> getItems() {
+        return items;
+    }
+
+    public void setItems(List<Items> items) {
+        this.items = items;
     }
 }

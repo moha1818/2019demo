@@ -1,6 +1,6 @@
 package com.sunland.pojo.json;
 
-public class InvoiceDetailJson extends createInvoiceJson {
+public class InvoiceDetailJson extends CreateInvoiceJson {
 
     private static final long serialVersionUID = 4271470094627868107L;
 
