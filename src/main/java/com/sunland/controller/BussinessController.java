@@ -11,6 +11,7 @@ import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,22 +26,22 @@ public class BussinessController {
     @ResponseBody
     @RequestMapping(value = "/getlist",method = RequestMethod.GET)
     @ApiOperation(value = "查询订单明细",notes = "[@moha]")
-    public RestResponse<PageInfo<PaymentList>> selectBusiness(@ApiParam(value = "页码")@RequestParam Integer pageNum,@ApiParam(value = "微信-utoken,安卓IOS-mobilenum")@RequestParam String token, @ApiParam(value = "设备：IOS，Android，WX")@RequestParam String deviceId, @ApiParam(value = "1-路停 2-停车场")@RequestParam int type) throws Exception {
+    public RestResponse<PageInfo<PaymentList>> selectBusiness(@ApiParam(value = "页码")@RequestParam Integer pageNum, @ApiParam(value = "微信-utoken,安卓IOS-mobilenum")@RequestParam String token, @ApiParam(value = "设备：IOS，Android，WX")@RequestParam String deviceId, @ApiParam(value = "1-路停 2-停车场")@RequestParam int type, HttpServletRequest request) throws Exception {
         String method = type==1?"selectBussinessList":"selectParkpotBussinessList";
         PageInfo pageInfo = new PageInfo();
         pageInfo.setPageSize(5);
         pageInfo.setPageNum(pageNum);
+        Integer accountId = (Integer) request.getSession().getAttribute("accountId");
         if("IOS".equals(deviceId) || "Android".equals(deviceId)){
             Map param = new HashMap<>();
-            param.put("mobilenum",token);
+            param.put("accountid",accountId);
             PageInfo<PaymentList> listPageInfo = tBusinessService.selectPage(pageInfo,method,param);
             pageInfo = listPageInfo;
         }else if("WX".equals(deviceId)){
             Map param = new HashMap<>();
-            param.put("utoken",token);
+            param.put("accountid",accountId);
             PageInfo<PaymentList> listPageInfo = tBusinessService.selectPage(pageInfo,method,param);
             pageInfo = listPageInfo;
-            //list = tBusinessService.selecBussinessList("",token,type);
         }else {
             throw new BadRequestException("not found device");
         }

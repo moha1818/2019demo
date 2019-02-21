@@ -58,63 +58,90 @@
   </update>
 
   <select id="selectBussinessList" resultType="com.sunland.pojo.json.PaymentList">
-    SELECT * from
-    (
     SELECT
-    t.uuid as uuid,DATE_FORMAT(t.lastpaytime,'%Y-%m-%d %h:%i') as dateTime,t.hphm as hmp,t.payment as amount
-    FROM
-    t_business t
-    INNER JOIN (
-    SELECT
-    e.hphm,
-    e.hpzl,
-    d.mobilenum
-    FROM
-    account_vehicle e
-    LEFT JOIN account d ON e.accountid = d.accountid
-    WHERE
-    <if test="mobilenum != null and mobilenum !=''">
-      d.mobilenum = #{mobilenum, jdbcType=VARCHAR}
-    </if>
-    <if test="utoken !=null and utoken !=''">
-      d.utoken = #{utoken,jdbcType=VARCHAR}
-    </if>
-    ) f ON t.hphm = f.hphm
-    AND t.hpzl = f.hpzl
-    WHERE invoicestate = 0 and businessstate =2
-    ) r
-    WHERE r.amount!=0
-    ORDER BY r.dateTime DESC
+	*
+FROM
+	(
+SELECT
+	t.uuid AS uuid,
+	DATE_FORMAT( t.lastpaytime, '%Y-%m-%d %h:%i' ) AS dateTime,
+	t.hphm AS hmp,
+	t.payment AS amount,
+	f.accountid = #{accountid} AS binding
+FROM
+	(
+SELECT
+	*
+FROM
+	t_business
+WHERE
+	EXISTS ( SELECT uuid FROM t_pay WHERE t_pay.uuid = t_business.uuid AND accountid = #{accountid} )
+	) t
+	LEFT JOIN (
+SELECT
+	e.hphm,
+	e.hpzl,
+	d.mobilenum,
+	d.accountid
+FROM
+	account_vehicle e
+	LEFT JOIN account d ON e.accountid = d.accountid
+	) f
+	ON t.hphm = f.hphm
+	AND t.hpzl = f.hpzl
+WHERE
+	 invoicestate = 0
+		AND
+	 businessstate = 2
+	) r
+WHERE
+	r.amount > 0
+ORDER BY
+	r.dateTime DESC
   </select>
 
   <select id="selectParkpotBussinessList" resultType="com.sunland.pojo.json.PaymentList">
-    SELECT * from
-    (
-    SELECT
-    t.uuid as uuid,DATE_FORMAT(t.lastpaytime,'%Y-%m-%d %h:%i') as dateTime,t.hphm as hmp,t.payment-t.delayfee as amount,t.parkpointid
-    FROM
-    t_parkpot_business t
-    INNER JOIN (
-    SELECT
-    e.hphm,
-    e.hpzl,
-    d.mobilenum
-    FROM
-    account_vehicle e
-    LEFT JOIN account d ON e.accountid = d.accountid
-    WHERE
-    <if test="mobilenum != null and mobilenum !=''">
-      d.mobilenum = #{mobilenum, jdbcType=VARCHAR}
-    </if>
-    <if test="openid !=null and openid !=''">
-      d.utoken = #{utoken,jdbcType=VARCHAR}
-    </if>
-    ) f ON t.hphm = f.hphm
-    AND t.hpzl = f.hpzl
-    WHERE invoicestate = 0 and businessstate =2
-    ) r
-    WHERE r.amount>0
-    ORDER BY r.dateTime DESC
+   SELECT
+	*
+FROM
+	(
+SELECT
+	t.uuid AS uuid,
+	DATE_FORMAT( t.lastpaytime, '%Y-%m-%d %h:%i' ) AS dateTime,
+	t.hphm AS hmp,
+	t.payment AS amount,
+	f.accountid = #{accountid} AS binding
+FROM
+	(
+	SELECT
+	*
+FROM
+	t_parkpot_business
+WHERE
+	EXISTS ( SELECT uuid FROM t_pay WHERE t_pay.uuid = t_parkpot_business.uuid AND accountid = #{accountid} )
+	OR accountid_wp = #{accountid}
+	) t
+	LEFT JOIN (
+SELECT
+	e.hphm,
+	e.hpzl,
+	d.mobilenum,
+	d.accountid
+FROM
+	account_vehicle e
+	LEFT JOIN account d ON e.accountid = d.accountid
+	) f
+	ON t.hphm = f.hphm
+	AND t.hpzl = f.hpzl
+WHERE
+	 invoicestate = 0
+		AND
+	 businessstate = 2
+	) r
+WHERE
+	r.amount > 0
+ORDER BY
+	r.dateTime DESC
   </select>
   <select id="selectparkpointBusinessByuuids" resultType="com.sunland.dto.BussinessInfo">
     SELECT

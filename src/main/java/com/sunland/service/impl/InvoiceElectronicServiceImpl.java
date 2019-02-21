@@ -15,7 +15,7 @@ import com.sunland.service.InvoiceElectronicService;
 import com.sunland.support.mybatis.BaseCRUDServiceImpl;
 import com.sunland.utils.AES128;
 import com.sunland.utils.HttpUtil;
-import com.sunland.utils.StringUtil;
+import com.sunland.utils.ParamUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -29,10 +29,10 @@ import java.util.stream.Collectors;
 
 @Service
 public class InvoiceElectronicServiceImpl extends BaseCRUDServiceImpl<InvoiceElectronic> implements InvoiceElectronicService {
-    private static final String BASEURL = "https://api-dev.piaozone.com";
-    private static final String CLIENT_ID = "CF1r0jHSI0I493";
-    private static final String CLIENT_SECRET = "699lhH4R2EDe2jv87nHAa5Q60CE1q2";
-
+    private static final String BASEURL = ParamUtils.getParametersString("INVOICE_BASEURL");
+    private BigDecimal totalAmount = null;
+    private BigDecimal taxAmount = null;
+    private BigDecimal invoiceAmount = null;
     @Resource
     private InvoiceElectronicMapper invoiceElectronicMapper;
 
@@ -55,17 +55,12 @@ public class InvoiceElectronicServiceImpl extends BaseCRUDServiceImpl<InvoiceEle
 
     @Override
     public List<HeaderInfo> selectHeaderInfoByname(String name) {
-        String url = BASEURL+"/bill/query/querytitles?access_token="+accessToken()+"&name="+name;
+        String url = BASEURL+"/bill/query/querytitles?access_token="+AES128.accessToken()+"&name="+name;
         String result = HttpUtil.doGet(url,null,null,"UTF-8",true);
         JSONObject json = JSONObject.parseObject(result);
         List<HeaderInfo> headerInfos = JSONObject.parseArray(json.getString("data"),HeaderInfo.class);
         return headerInfos;
     }
-
-
-    private BigDecimal totalAmount = new BigDecimal(0.00);
-    private BigDecimal taxAmount = new BigDecimal(0.00);
-    private BigDecimal invoiceAmount = new BigDecimal(0.00);
 
     private Items count(double totalAmountInt,double taxrate){
 
@@ -136,14 +131,14 @@ public class InvoiceElectronicServiceImpl extends BaseCRUDServiceImpl<InvoiceEle
         } catch (Exception e) {
             throw new BizException("加密异常");
         }
-        JSONObject jsonObject = AES128.doPost(BASEURL+"/m5/bill/invoice/create?access_token="+accessToken(),json);
+        JSONObject jsonObject = AES128.doPost(BASEURL+"/m5/bill/invoice/create?access_token="+AES128.accessToken(),json);
         String resultCode = jsonObject.getString("errcode");
         InvoiceDate invoiceDate = jsonObject.getObject("data", InvoiceDate.class);
         if("0000".equals(resultCode)){
             //开票成功
             InvoiceElectronic invoiceElectronic = new InvoiceElectronic();
             invoiceElectronic.setAccountid(invoiceElectronicInfo.getAccountid());
-            invoiceElectronic.setSerialno(invoiceDate.getInvoiceNo());
+            invoiceElectronic.setSerialno(invoiceDate.getSerialNo());
             //发票金额（不含税）
             invoiceElectronic.setInvoiceamount(invoiceAmount);
             invoiceElectronic.setTotaltaxamount(taxAmount);
@@ -197,17 +192,7 @@ public class InvoiceElectronicServiceImpl extends BaseCRUDServiceImpl<InvoiceEle
         System.out.println(taxAmountStr);
     }
 
-    private String accessToken(){
-        String requestUrl = BASEURL+"/base/oauth/token";
-        JSONObject orcmOrder = new JSONObject();
-        orcmOrder.put("client_id", CLIENT_ID);
-        long timestamp = System.currentTimeMillis();
-        String sign = CLIENT_ID+CLIENT_SECRET+timestamp;
-        orcmOrder.put("sign", StringUtil.MD5(sign));
-        orcmOrder.put("timestamp", timestamp);
-        JSONObject str = AES128.doPost(requestUrl,  orcmOrder.toJSONString());
-        return str.getString("access_token");
-    }
+
 
 
 

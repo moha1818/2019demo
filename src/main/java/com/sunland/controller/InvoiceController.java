@@ -12,6 +12,7 @@ import com.sunland.pojo.json.*;
 import com.sunland.service.InvoiceElectronicInfoService;
 import com.sunland.service.InvoiceElectronicItemService;
 import com.sunland.service.InvoiceElectronicService;
+import com.sunland.utils.ParamUtils;
 import io.swagger.annotations.*;
 import joptsimple.internal.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,10 +78,10 @@ public class InvoiceController {
         createInvoiceJson.setBuyerMobilePhone(invoiceElectronicInfo.getBuyermobilephone());
 
         //收款人
-        createInvoiceJson.setDrawer("边锦晶");
+        createInvoiceJson.setDrawer(ParamUtils.getParametersString("INVOICE_DRAWER"));
         //复核人
-        createInvoiceJson.setReviewer("俞琪");
-        createInvoiceJson.setPayee("朗东资产");
+        createInvoiceJson.setReviewer(ParamUtils.getParametersString("INVOICE_REVIEWER"));
+        createInvoiceJson.setPayee(ParamUtils.getParametersString("INVOICE_PAYEE"));
         createInvoiceJson.setRemark(invoiceElectronicInfo.getRemark());
         InvoiceDate invoiceDate = invoiceElectronicService.saveInvoice(createInvoiceJson,invoiceElectronicInfo);
         return new RestResponse<>(invoiceDate);
@@ -160,4 +161,6 @@ public class InvoiceController {
         List<InvoiceElectronicItem> items = invoiceElectronicItemService.select(invoiceElectronicItem);
         return new RestResponse<List<InvoiceElectronicItem>>(items);
     }
+
+
 }

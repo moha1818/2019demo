@@ -8,7 +8,6 @@ import com.sunland.utils.AES128;
 import com.sunland.utils.StringUtil;
 import joptsimple.internal.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -17,7 +16,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.concurrent.TimeoutException;
 
 /**
  * Created by batwings on 16/01/06.
@@ -29,6 +27,10 @@ public class SessionInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
+        String path = httpServletRequest.getServletPath();
+        if(path.startsWith("/api/common")){
+            return true;
+        }
         String device = httpServletRequest.getParameter("deviceId");
         String token = httpServletRequest.getParameter("token");
         if(Strings.isNullOrEmpty(token)){

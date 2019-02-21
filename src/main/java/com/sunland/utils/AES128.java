@@ -15,8 +15,10 @@ import javax.crypto.spec.SecretKeySpec;
 
 //https://www.oschina.net/code/snippet_242957_9931
 public class AES128 {
-	private final static String PASSWORD = "9HBue67HwwrEGSV9";
-	
+	private final static String PASSWORD = ParamUtils.getParametersString("INVOICE_ENCRYPT_KEY");
+    private static final String BASEURL = ParamUtils.getParametersString("INVOICE_BASEURL");
+    private static final String CLIENT_ID = ParamUtils.getParametersString("INVOICE_CLIENT_ID");
+    private static final String CLIENT_SECRET = ParamUtils.getParametersString("INVOICE_CLIENT_SECRET");
 	/**
 	 * 加密 
 	 * @Description TODO  	V1.0
@@ -172,5 +174,18 @@ public class AES128 {
             throw new RuntimeException(e);
         }
         return response;
+    }
+
+
+    public static String accessToken(){
+        String requestUrl = BASEURL+"/base/oauth/token";
+        JSONObject orcmOrder = new JSONObject();
+        orcmOrder.put("client_id", CLIENT_ID);
+        long timestamp = System.currentTimeMillis();
+        String sign = CLIENT_ID+CLIENT_SECRET+timestamp;
+        orcmOrder.put("sign", StringUtil.MD5(sign));
+        orcmOrder.put("timestamp", timestamp);
+        JSONObject str = AES128.doPost(requestUrl,  orcmOrder.toJSONString());
+        return str.getString("access_token");
     }
 }
