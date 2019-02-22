@@ -1,7 +1,6 @@
 package com.sunland.pojo;
 
 import io.swagger.annotations.ApiModelProperty;
-import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -59,6 +58,10 @@ public class InvoiceElectronicInfo implements Serializable {
     @Transient
     @ApiModelProperty(value="开票业务类型：路内-1,停车场-2")
     private Integer type;
+
+    @Transient
+    @ApiModelProperty(value = "停车场ID-停车场发票")
+    private String parkpotid;
 
     private static final long serialVersionUID = 1L;
 
@@ -180,5 +183,13 @@ public class InvoiceElectronicInfo implements Serializable {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public String getParkpotid() {
+        return parkpotid;
+    }
+
+    public void setParkpotid(String parkpotid) {
+        this.parkpotid = parkpotid;
     }
 }

@@ -110,7 +110,8 @@ SELECT
 	DATE_FORMAT( t.lastpaytime, '%Y-%m-%d %h:%i' ) AS dateTime,
 	t.hphm AS hmp,
 	t.payment AS amount,
-	f.accountid = #{accountid} AS binding
+	f.accountid = #{accountid} AS binding,
+	t.parkpotid
 FROM
 	(
 	SELECT

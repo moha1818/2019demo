@@ -15,7 +15,7 @@ public class PaymentList implements Serializable {
     @ApiModelProperty(value="缴费价格")
     private String amount;
     @ApiModelProperty(value = "停车场ID")
-    private String parkpointid;
+    private String parkpotid;
     @ApiModelProperty(value = "是否为绑定车辆业务 (null or false的时候是非绑定车辆业务)")
     private Boolean binding;
 
@@ -51,19 +51,19 @@ public class PaymentList implements Serializable {
         this.amount = amount;
     }
 
-    public String getParkpointid() {
-        return parkpointid;
-    }
-
-    public void setParkpointid(String parkpointid) {
-        this.parkpointid = parkpointid;
-    }
-
     public Boolean getBinding() {
         return binding;
     }
 
     public void setBinding(Boolean binding) {
         this.binding = binding;
+    }
+
+    public String getParkpotid() {
+        return parkpotid;
+    }
+
+    public void setParkpotid(String parkpotid) {
+        this.parkpotid = parkpotid;
     }
 }
