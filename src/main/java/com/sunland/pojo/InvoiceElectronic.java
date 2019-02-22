@@ -44,6 +44,8 @@ public class InvoiceElectronic implements Serializable {
 
     private String content;
 
+    private String parkpotid;
+
     private static final long serialVersionUID = 1L;
 
     public Integer getEid() {
@@ -165,5 +167,13 @@ public class InvoiceElectronic implements Serializable {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public String getParkpotid() {
+        return parkpotid;
+    }
+
+    public void setParkpotid(String parkpotid) {
+        this.parkpotid = parkpotid;
     }
 }

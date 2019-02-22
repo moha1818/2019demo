@@ -59,6 +59,11 @@ public class InvoiceController {
                 throw new BadRequestException("企业开票税号必填");
             }
         }
+        if(invoiceElectronicInfo.getType() == 2){
+            if(Strings.isNullOrEmpty(invoiceElectronicInfo.getParkpotid())){
+                throw new BadRequestException("停车场发票停车场ID必传");
+            }
+        }
 
         CreateInvoiceJson createInvoiceJson = new CreateInvoiceJson();
         int i= new Random().nextInt(900)+100;

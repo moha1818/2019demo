@@ -150,6 +150,7 @@ public class InvoiceElectronicServiceImpl extends BaseCRUDServiceImpl<InvoiceEle
             invoiceElectronic.setPdfurl(invoiceDate.getPdfUrl());
             invoiceElectronic.setStatus(1);
             invoiceElectronic.setContent("停车费");
+            invoiceElectronic.setParkpotid(invoiceElectronicInfo.getParkpotid());
             invoiceElectronicMapper.insertSelective(invoiceElectronic);
 
             invoiceElectronicInfo.setEid(invoiceElectronic.getEid());
