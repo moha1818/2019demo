@@ -97,8 +97,14 @@ public class InvoiceController {
     @RequestMapping(value = "/query",method = RequestMethod.GET)
     @ResponseBody
     public RestResponse<List<HeaderInfo>> query(@ApiParam(value = "微信-utoken,安卓IOS-mobilenum")@RequestParam String token,@ApiParam(value = "设备：IOS，Android，WX")@RequestParam String deviceId,@ApiParam(value = "企业名称")@RequestParam String name){
+        if(Strings.isNullOrEmpty(name)){
+            new RestResponse<List<HeaderInfo>>(null);
+        }
         List<HeaderInfo> list = invoiceElectronicService.selectHeaderInfoByname(name);
-        list = list.stream().limit(3).collect(Collectors.toList());
+        if(list != null && list.size()>0){
+            list = list.stream().limit(3).collect(Collectors.toList());
+        }
+
         return new RestResponse<List<HeaderInfo>>(list);
     }
 
