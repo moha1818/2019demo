@@ -119,8 +119,9 @@ FROM
 FROM
 	t_parkpot_business
 WHERE
-	EXISTS ( SELECT uuid FROM t_pay WHERE t_pay.uuid = t_parkpot_business.uuid AND accountid = #{accountid} )
-	OR accountid_wp = #{accountid}
+	(EXISTS ( SELECT uuid FROM t_pay WHERE t_pay.uuid = t_parkpot_business.uuid AND accountid = #{accountid} )
+	OR accountid_wp = #{accountid})
+	and not Exists (SELECT uuid FROM t_pay WHERE t_pay.uuid = t_parkpot_business.uuid AND paymode =9)
 	) t
 	LEFT JOIN (
 SELECT

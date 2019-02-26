@@ -2,7 +2,6 @@ package com.sunland.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.sunland.dto.RestResponse;
-import com.sunland.exception.BadRequestException;
 import com.sunland.pojo.json.PaymentList;
 import com.sunland.service.TBusinessService;
 import io.swagger.annotations.Api;
@@ -32,19 +31,10 @@ public class BussinessController {
         pageInfo.setPageSize(5);
         pageInfo.setPageNum(pageNum);
         Integer accountId = (Integer) request.getSession().getAttribute("accountId");
-        if("IOS".equals(deviceId) || "Android".equals(deviceId)){
-            Map param = new HashMap<>();
-            param.put("accountid",accountId);
-            PageInfo<PaymentList> listPageInfo = tBusinessService.selectPage(pageInfo,method,param);
-            pageInfo = listPageInfo;
-        }else if("WX".equals(deviceId)){
-            Map param = new HashMap<>();
-            param.put("accountid",accountId);
-            PageInfo<PaymentList> listPageInfo = tBusinessService.selectPage(pageInfo,method,param);
-            pageInfo = listPageInfo;
-        }else {
-            throw new BadRequestException("not found device");
-        }
+        Map param = new HashMap<>();
+        param.put("accountid",accountId);
+        PageInfo<PaymentList> listPageInfo = tBusinessService.selectPage(pageInfo,method,param);
+        pageInfo = listPageInfo;
         return new RestResponse<>(pageInfo);
     }
 

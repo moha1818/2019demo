@@ -5,6 +5,8 @@ import com.sunland.dao.*;
 import com.sunland.dto.BussinessInfo;
 import com.sunland.dto.InvoiceDate;
 import com.sunland.dto.Items;
+import com.sunland.dto.MoneyDto;
+import com.sunland.exception.BadRequestException;
 import com.sunland.exception.BizException;
 import com.sunland.pojo.InvoiceElectronic;
 import com.sunland.pojo.InvoiceElectronicInfo;
@@ -30,9 +32,6 @@ import java.util.stream.Collectors;
 @Service
 public class InvoiceElectronicServiceImpl extends BaseCRUDServiceImpl<InvoiceElectronic> implements InvoiceElectronicService {
     private static final String BASEURL = ParamUtils.getParametersString("INVOICE_BASEURL");
-    private BigDecimal totalAmount = null;
-    private BigDecimal taxAmount = null;
-    private BigDecimal invoiceAmount = null;
     @Resource
     private InvoiceElectronicMapper invoiceElectronicMapper;
 
@@ -62,17 +61,20 @@ public class InvoiceElectronicServiceImpl extends BaseCRUDServiceImpl<InvoiceEle
         return headerInfos;
     }
 
-    private Items count(double totalAmountInt,double taxrate){
-
+    private Items count(double totalAmountInt,double taxrate,MoneyDto moneyDto){
         BigDecimal totalAmountTemp = new BigDecimal(totalAmountInt/100).setScale(2,RoundingMode.HALF_UP);
-        totalAmount = totalAmount.add(totalAmountTemp).setScale(2,RoundingMode.HALF_UP);
+        BigDecimal totalAmount = moneyDto.getTotalAmount().add(totalAmountTemp).setScale(2,RoundingMode.HALF_UP);
         String totalAmountStr = totalAmountTemp.toString();
 
         BigDecimal taxAmountTemp = totalAmountTemp.divide(new BigDecimal(1+taxrate/100),2,RoundingMode.HALF_UP).multiply(new BigDecimal(taxrate/100)).setScale(2,RoundingMode.DOWN);
-        taxAmount = taxAmount.add(taxAmountTemp);
+        BigDecimal taxAmount = moneyDto.getTaxAmount().add(taxAmountTemp);
         String taxAmountStr = taxAmountTemp.toString();
 
-        invoiceAmount = totalAmount.subtract(taxAmount);
+        BigDecimal invoiceAmount = totalAmount.subtract(taxAmount);
+
+        moneyDto.setTaxAmount(taxAmount);
+        moneyDto.setInvoiceAmount(invoiceAmount);
+        moneyDto.setTotalAmount(totalAmount);
 
         //路内税率10%
         Items items = new Items();
@@ -90,38 +92,42 @@ public class InvoiceElectronicServiceImpl extends BaseCRUDServiceImpl<InvoiceEle
         uuids = list.toArray(uuids);
         List<BussinessInfo> bussinessInfoList = new ArrayList<>();
         List<Items> itemsList = new ArrayList<>();
-        totalAmount = new BigDecimal(0.00);
-        taxAmount = new BigDecimal(0.00);
-        invoiceAmount = new BigDecimal(0.00);
+        MoneyDto moneyDto = new MoneyDto();
         //路内
         if(invoiceElectronicInfo.getType() == 1){
             bussinessInfoList = tBusinessMapper.selectparkpointBusinessByuuids(uuids);
             Integer totalAmountInt = bussinessInfoList.stream().mapToInt(BussinessInfo::getPayment).sum();
+
             //路内税率10%
-            Items items = count(totalAmountInt,10);
+            Items items = count(totalAmountInt,10,moneyDto);
             itemsList.add(items);
-            String invoiceAmountStr = invoiceAmount.toString();
+            String invoiceAmountStr = moneyDto.getInvoiceAmount().toString();
             createInvoiceJson.setInvoiceAmount(invoiceAmountStr);
-            createInvoiceJson.setTotalAmount(totalAmount.toString());
-            createInvoiceJson.setTotalTaxAmount(taxAmount.toString());
+            createInvoiceJson.setTotalAmount(moneyDto.getTotalAmount().toString());
+            createInvoiceJson.setTotalTaxAmount(moneyDto.getTaxAmount().toString());
         }else if(invoiceElectronicInfo.getType() == 2){
             bussinessInfoList = tParkpotBusinessMapper.selectparkpotBusinessByuuids(uuids);
             List<BussinessInfo> tax10 = bussinessInfoList.stream().filter(a -> a.getTaxrate() == 10).collect(Collectors.toList());
             List<BussinessInfo> tax5 = bussinessInfoList.stream().filter(a -> a.getTaxrate() == 5).collect(Collectors.toList());
+            List<BussinessInfo> filter = bussinessInfoList.stream().filter(a->!a.getParkpotid().equals(invoiceElectronicInfo.getParkpotid())).collect(Collectors.toList());
+            if(filter.size()>0){
+                throw new BadRequestException("请务必提交同个停车场的业务数据");
+            }
+
             if(tax10.size() > 0){
                 Integer totalAmountInt = tax10.stream().mapToInt(BussinessInfo::getPayment).sum();
-                Items items = count(totalAmountInt,10);
+                Items items = count(totalAmountInt,10,moneyDto);
                 itemsList.add(items);
             }
             if(tax5.size() > 0){
                 Integer totalAmountInt = tax5.stream().mapToInt(BussinessInfo::getPayment).sum();
-                Items items = count(totalAmountInt,5);
+                Items items = count(totalAmountInt,5,moneyDto);
                 itemsList.add(items);
             }
-            String invoiceAmountStr = invoiceAmount.toString();
+            String invoiceAmountStr = moneyDto.getInvoiceAmount().toString();
             createInvoiceJson.setInvoiceAmount(invoiceAmountStr);
-            createInvoiceJson.setTotalAmount(totalAmount.toString());
-            createInvoiceJson.setTotalTaxAmount(taxAmount.toString());
+            createInvoiceJson.setTotalAmount(moneyDto.getTotalAmount().toString());
+            createInvoiceJson.setTotalTaxAmount(moneyDto.getTaxAmount().toString());
         }
 
         createInvoiceJson.setItems(itemsList);
@@ -140,9 +146,9 @@ public class InvoiceElectronicServiceImpl extends BaseCRUDServiceImpl<InvoiceEle
             invoiceElectronic.setAccountid(invoiceElectronicInfo.getAccountid());
             invoiceElectronic.setSerialno(invoiceDate.getSerialNo());
             //发票金额（不含税）
-            invoiceElectronic.setInvoiceamount(invoiceAmount);
-            invoiceElectronic.setTotaltaxamount(taxAmount);
-            invoiceElectronic.setTotalamount(totalAmount);
+            invoiceElectronic.setInvoiceamount(moneyDto.getInvoiceAmount());
+            invoiceElectronic.setTotaltaxamount(moneyDto.getTaxAmount());
+            invoiceElectronic.setTotalamount(moneyDto.getTotalAmount());
             invoiceElectronic.setInvoicetype(Byte.valueOf(createInvoiceJson.getType()));
             invoiceElectronic.setBusinesstype(invoiceElectronicInfo.getType());
             invoiceElectronic.setInvoicecode(invoiceDate.getInvoiceCode());

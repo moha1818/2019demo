@@ -59,7 +59,8 @@
 	tpb.holdingtime,
 	tp.parkpotname as parkname,
 	tpb.parktime,
-	tp.taxrate
+	tp.taxrate,
+	tpb.parkpotid
     FROM
 	t_parkpot_business tpb
 	INNER JOIN t_parkpot tp ON tpb.parkpotid = tp.parkpotid

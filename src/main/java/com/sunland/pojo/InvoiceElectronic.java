@@ -1,5 +1,6 @@
 package com.sunland.pojo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.persistence.GeneratedValue;
@@ -40,6 +41,7 @@ public class InvoiceElectronic implements Serializable {
     @ApiModelProperty(value="开票状态 0-作废 1-成功 2-开票中 3-异常")
     private Integer status;
     @ApiModelProperty(value="发票开具时间")
+    @JsonFormat(pattern="yyyy-MM-dd hh:mm:ss",timezone = "GMT+8")
     private Date createdate;
 
     private String content;

@@ -34,4 +34,9 @@ public class InvoiceCommonController {
         return new RestResponse<>(pdfUrl);
     }
 
+    @RequestMapping(value = "/test",method = RequestMethod.GET)
+    @ResponseBody
+    public String ac(){
+        return "1";
+    }
 }

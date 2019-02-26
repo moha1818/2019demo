@@ -40,6 +40,8 @@ public class InvoiceController {
     @Autowired
     private InvoiceElectronicItemService invoiceElectronicItemService;
 
+    private final static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+
     @ApiOperation(value = "开票信息页-抬头信息初始化",notes = "[@moha]")
     @RequestMapping(value = "/toCreate",method = RequestMethod.GET)
     @ResponseBody
@@ -59,6 +61,10 @@ public class InvoiceController {
                 throw new BadRequestException("企业开票税号必填");
             }
         }
+        if(invoiceElectronicInfo.getType() == null){
+            throw new BadRequestException("业务类型必传");
+        }
+
         if(invoiceElectronicInfo.getType() == 2){
             if(Strings.isNullOrEmpty(invoiceElectronicInfo.getParkpotid())){
                 throw new BadRequestException("停车场发票停车场ID必传");
@@ -138,7 +144,7 @@ public class InvoiceController {
         }
         invoiceDetail.setAmount(invoiceElectronic.getTotalamount().toString());
         invoiceDetail.setId(invoiceElectronic.getEid());
-        invoiceDetail.setCreateTime(invoiceElectronic.getCreatedate().toString());
+        invoiceDetail.setCreateTime(sdf.format(invoiceElectronic.getCreatedate()));
         invoiceDetail.setStatus(invoiceElectronic.getStatus());
         invoiceDetail.setPdfUrl(invoiceElectronic.getPdfurl());
 

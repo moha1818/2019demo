@@ -163,4 +163,11 @@ public class RestControllerAdvice {
         writer.write(e.getMessage());
     }
 
+
+    @ExceptionHandler(AuthorizationException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ResponseBody
+    public RestResponse<String> handleAuthorizationException(Exception e) {
+        return new RestResponse<>(HttpStatus.UNAUTHORIZED.value(), e.getMessage(), "");
+    }
 }

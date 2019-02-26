@@ -1,5 +1,6 @@
 package com.sunland.pojo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.persistence.GeneratedValue;
@@ -22,6 +23,7 @@ public class InvoiceElectronicItem implements Serializable {
     @ApiModelProperty(value="金额")
     private BigDecimal parkmoney;
     @ApiModelProperty(value="停车时间")
+    @JsonFormat(pattern="yyyy-MM-dd hh:mm:ss",timezone = "GMT+8")
     private Date parktime;
     @ApiModelProperty(value="号码牌")
     private String hphm;

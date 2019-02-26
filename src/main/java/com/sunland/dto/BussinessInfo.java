@@ -10,6 +10,7 @@ public class BussinessInfo {
     private String parkname;
     private Integer taxrate;
     private Date parktime;
+    private String parkpotid;
 
     public String getUuid() {
         return uuid;
@@ -65,5 +66,13 @@ public class BussinessInfo {
 
     public void setParktime(Date parktime) {
         this.parktime = parktime;
+    }
+
+    public String getParkpotid() {
+        return parkpotid;
+    }
+
+    public void setParkpotid(String parkpotid) {
+        this.parkpotid = parkpotid;
     }
 }
